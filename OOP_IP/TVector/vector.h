@@ -9,7 +9,7 @@ template <class T>
 
 class TVector {
 private:
-	T* _data;
+    T* _data;
 	size_t _capacity;
 	size_t _size;
 	size_t _deleted;
@@ -58,9 +58,21 @@ public:
             --(*this);
             return tmp;
         }
+        
+        /*Iterator operator+(Iterator it, size_t offset) {
+            auto temp = it;
+            for (size_t i = 0; i < offset; ++i) {
+                ++temp;
+            }
+            return temp;
+        }*/
 
         bool operator!=(const Iterator& other) const { 
             return (_ptr != other._ptr); 
+        }
+
+        bool operator==(const Iterator& other) const {
+            return (_ptr != other._ptr);
         }
 
         Iterator& operator=(const Iterator& other) { 
@@ -72,6 +84,10 @@ public:
             }   
             return *this;
         } 
+
+        size_t get_index() const noexcept {
+            return _pos;
+        }
     };
 
     class ConstIterator {
@@ -110,8 +126,20 @@ public:
             return tmp;
         }
 
+        /*ConstIterator operator+(ConstIterator it, size_t offset) {
+            auto temp = it;
+            for (size_t i = 0; i < offset; ++i) {
+                ++temp;
+            }
+            return temp;
+        }*/
+
         bool operator!=(const ConstIterator& other) const {
             return (_ptr != other._ptr);
+        }
+
+        bool operator==(const ConstIterator& other) const {
+            return (_ptr == other._ptr);
         }
 
         ConstIterator& operator=(const ConstIterator& other) {
@@ -130,6 +158,7 @@ public:
     TVector();
     TVector(size_t size);
 	TVector(const T* arr, size_t n);
+    TVector(std::initializer_list<T> init, size_t n);
 	TVector(const TVector<T>& other);
 	~TVector();
 
@@ -159,6 +188,9 @@ public:
     void pop_back();
     void pop_front();
     void erase(size_t pos);
+    void erase(const Iterator& it);
+    void erase(Iterator start, Iterator end);
+    void erase(Iterator start, size_t count);
 
     void emplace(size_t pos, const T& value);
     void assign(const T* arr, size_t n);
@@ -218,18 +250,27 @@ TVector<T>::TVector(const T* arr, size_t n) : TVector() {
 }
 
 template <class T>
+TVector<T>::TVector(std::initializer_list<T> init, size_t n) : TVector() {
+    reserve(calculate_capacity(n));
+    for (const auto& item : init) {
+        push_back(item);
+    }
+}
+
+template <class T>
 TVector<T>::TVector(const TVector<T>& other) : TVector() {
     reserve(other._size);
     for (size_t i = 0; i < other._capacity; ++i) {
         if (other._states[i] == BUSY) {
             push_back(other._data[i]);
         }
+        //else { throw std::invalid_argument("other is null"); }
     }
 }
 
 template <class T>
 TVector<T>::~TVector() {
-    delete _data;
+    delete[] _data;
 }
 
 //œ≈–≈√–”« » Œœ≈–¿“Œ–Œ¬ ¬≈ “Œ–¿
@@ -452,13 +493,15 @@ void TVector<T>::reserve(size_t required_capacity) {
     if (new_capacity <= _capacity) {
         return;
     }
-    T* new_data = static_cast<T*>(operator new[](new_capacity * sizeof(T)));
+    //T* new_data = static_cast<T*>(operator new(new_capacity * sizeof(T)));
+    T* new_data = new T[new_capacity];
+    
     State* new_states = new State[new_capacity];
 
     size_t new_size = 0;
     for (size_t i = 0; i < _capacity; ++i) {
         if (_states[i] == BUSY) {
-            new (new_data + new_size) T(std::move(_data[i]));
+            new (new_data + new_size) T((_data[i])); //std::move
             new_states[new_size] = BUSY;
             new_size++;
         }
@@ -472,14 +515,14 @@ void TVector<T>::reserve(size_t required_capacity) {
             _data[i].~T();
         }
     }
-    operator delete[](_data);
+    operator delete(_data);
     delete[] _states;
 
     _data = new_data;
     _states = new_states;
     _capacity = new_capacity;
     _size = new_size;
-    _deleted;
+    _deleted = 0;
 }
 
 template <class T> 
@@ -715,6 +758,61 @@ void TVector<T>::erase(size_t pos) {
     _states[pos] = DELETED;
     _size--;
     _deleted++;
+    if (_deleted * 100 > ((_size + _deleted) * 15)) {
+        reallocate_for_deleted();
+    }
+}
+
+template <class T>
+void TVector<T>::erase(const Iterator& it) {
+    if (it == end()) {
+        throw std::out_of_range("out of range");
+    }
+    size_t pos = it.get_index();
+    if (pos >= _capacity || _states[pos] != BUSY) {
+        throw std::out_of_range("invalid position");
+    }
+
+    _data[pos].~T();
+    _states[pos] = DELETED;
+    _size--;
+    _deleted++;
+    if (_deleted * 100 > ((_size + _deleted) * 15)) {
+        reallocate_for_deleted();
+    }
+}
+
+template <class T>
+void TVector<T>::erase(Iterator start, Iterator end) {
+    if (start.get_index() > end.get_index()) {
+        throw std::invalid_argument("Invalid range");
+    }
+    for (size_t i = start.get_index(); i < end.get_index(); ++i) {
+        if (_states[i] == BUSY) {
+            _data[i].~T();
+            _states[i] = DELETED;
+            _size--;
+            _deleted++;
+        }
+    }
+    if (_deleted * 100 > ((_size + _deleted) * 15)) {
+        reallocate_for_deleted();
+    }
+}
+
+template <class T>
+void TVector<T>::erase(Iterator start, size_t count) {
+    if ((start.get_index() + count) >= _capacity) {
+        throw std::invalid_argument("Invalid range");
+    }
+    for (size_t i = start.get_index(); i < (start.get_index() + count); ++i) {
+        if (_states[i] == BUSY) {
+            _data[i].~T();
+            _states[i] = DELETED;
+            _size--;
+            _deleted++;
+        }
+    }
     if (_deleted * 100 > ((_size + _deleted) * 15)) {
         reallocate_for_deleted();
     }
