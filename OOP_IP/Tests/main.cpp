@@ -425,7 +425,352 @@ bool test_32_clear_mass()
     return TestSystem::check(expected_result, actual_result);
 }
 
+bool test_33_push_back_int()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec(5);
+    vec.push_back(111);
+    vec.push_back(99);
+    vec.push_back(1);
+    if (vec[5] != 111 || vec[6] != 99 || vec[7] != 1) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
 
+bool test_34_push_back_char()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<char> vec;
+    vec.push_back('5');
+    vec.push_back('h');
+    vec.push_back('#');
+    if (vec[0] != '5' || vec[1] != 'h' || vec[2] != '#') actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_35_push_back_string()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<std::string> vec;
+    vec.push_back("Hello");
+    vec.push_back("there");
+    vec.push_back("guys");
+    if (vec[0] != "Hello" || vec[1] != "there" || vec[2] != "guys") actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_36_push_back_mass()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec;
+    for (int i = 0; i < 10; i++) {
+        vec.push_back(i);
+    }
+    if (vec.size() != 10 || vec[7] != 7) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_37_push_front_int()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec(5);
+    vec.push_front(111);
+    vec.push_front(99);
+    vec.push_front(1);
+    if (vec[0] != 1 || vec[1] != 99 || vec[2] != 111) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_38_push_front_char()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<char> vec;
+    vec.push_front('5');
+    vec.push_front('h');
+    vec.push_front('#');
+    if (vec[0] != '#' || vec[1] != 'h' || vec[2] != '5') actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_39_push_back_string()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<std::string> vec;
+    vec.push_front("yo");
+    vec.push_front("hi");
+    vec.push_front("wassup");
+    if (vec[0] != "wassup" || vec[1] != "hi" || vec[2] != "yo") actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_40_push_back_mass()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec;
+    for (int i = 0; i < 10; i++) {
+        vec.push_front(i);
+    }
+    if (vec.size() != 10 || vec[9] != 0 || vec[4] != 5) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_41_insert_int()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({1, 5, 9, 3}, 4);
+    vec.insert(2, 499);
+    if (vec[2] != 499 || vec[3] != 9 || vec.size() != 5) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_42_insert_int_it()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({ 1, 5, 9, 3 }, 4);
+    vec.insert(vec.begin(), 499);
+    if (vec[0] != 499 || vec[3] != 9 || vec.size() != 5) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_43_insert_char()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<char> vec({ '1', '5', '9', '3' }, 4);
+    vec.insert(2, '4');
+    if (vec[2] != '4' || vec[3] != '9' || vec.size() != 5) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_44_insert_char_it()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<char> vec({ '1', '5', '9', '3' }, 4);
+    vec.insert(vec.begin(), '4');
+    if (vec[0] != '4' || vec[3] != '9' || vec.size() != 5) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_45_insert_string()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<std::string> vec({ "yo", "gg", "hi", "qwerty"}, 4);
+    vec.insert(2, "boo");
+    if (vec[2] != "boo" || vec[3] != "hi" || vec.size() != 5) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_46_insert_string_it()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<std::string> vec({ "yo", "gg", "hi", "qwerty" }, 4);
+    vec.insert(vec.begin(), "boo");
+    if (vec[0] != "boo" || vec[3] != "hi" || vec.size() != 5) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_47_insert_int_it_count()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({ 1, 5, 9, 3 }, 4);
+    vec.insert(vec.begin(), 3, 499);
+    if (vec[0] != 499 || vec[1] != 499 || vec[2] != 499 || vec.size() != 7) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_48_insert_char_it_count()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<char> vec({ '1', '5', '9', '3' }, 4);
+    vec.insert(vec.begin(), 3, '4');
+    if (vec[0] != '4' || vec[1] != '4' || vec[2] != '4' || vec.size() != 7) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+//bool test_49_insert_string_it_count()
+//{
+//    bool expected_result = true;
+//    bool actual_result = true;
+//    TVector<std::string> vec({ "yo", "gg", "hi", "qwerty" }, 4);
+//    vec.insert(vec.begin(), 3, "boo");
+//    if (vec[0] != "boo" || vec[1] != "boo" || vec[2] != "boo" || vec[5] != "hi" || vec.size() != 7) actual_result = false;
+//    return TestSystem::check(expected_result, actual_result);
+//}
+
+bool test_50_erase_int()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({ 1, 5, 9, 3 }, 4);
+    vec.erase(2);
+    if (vec[2] != 3 || vec[1] != 5 || vec.size() != 3) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_51_erase_int_it()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({ 1, 5, 9, 3 }, 4);
+    vec.erase(vec.begin());
+    if (vec[0] != 5 || vec[1] != 9 || vec.size() != 3) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_52_erase_char()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<char> vec({ '1', '5', '9', '3' }, 4);
+    vec.erase(2);
+    if (vec[2] != '3' || vec[1] != '5' || vec.size() != 3) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_53_erase_char_it()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<char> vec({ '1', '5', '9', '3' }, 4);
+    vec.erase(vec.begin());
+    if (vec[0] != '5' || vec[1] != '9' || vec.size() != 3) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_54_erase_string()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<std::string> vec({ "yo", "gg", "hi", "qwerty" }, 4);
+    vec.erase(2);
+    if (vec[2] != "qwerty" || vec[1] != "gg" || vec.size() != 4) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_55_erase_string_it()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<std::string> vec({ "yo", "gg", "hi", "qwerty" }, 4);
+    vec.erase(vec.begin());
+    if (vec[0] != "gg" || vec[2] != "qwerty" || vec.size() != 4) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_56_erase_int_it_count()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({ 1, 5, 9, 3 }, 4);
+    vec.erase(vec.begin(), 3);
+    if (vec[0] != 3 || vec.size() != 1) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_57_erase_char_it_count()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<char> vec({ '1', '5', '9', '3' }, 4);
+    vec.erase(vec.begin(), 3);
+    if (vec[0] != '3' ||  vec.size() != 1) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_58_erase_int_it_range()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({ 1, 5, 9, 3 }, 4);
+    vec.erase(vec.begin(), vec.end());
+    if (vec.size() != 0) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_59_erase_char_it_range()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<char> vec({ '1', '5', '9', '3' }, 4);
+    vec.erase(vec.begin(), vec.end());
+    if (vec.size() != 0) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_60_pop_back_int()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({ 1, 5, 9, 3 }, 4);
+    vec.pop_back();
+    if (vec.size() != 3) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_61_pop_back_char()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<char> vec({ '1', '5', '9', '3' }, 4);
+    vec.pop_back();
+    if (vec.size() != 3) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_62_pop_back_string()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<std::string> vec({ "1", "5", "9", "3" }, 4);
+    vec.pop_back();
+    if (vec.size() != 3) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_63_pop_front_char()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<char> vec({ '1', '5', '9', '3' }, 4);
+    vec.pop_front();
+    if (vec.size() != 3) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_64_pop_front_int()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    int mass[4] = { 1, 5, 9, 3 };
+    TVector<int> vec(mass, 4);
+    vec.pop_front();
+    if (vec.size() != 3) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_65_pop_back_string()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<std::string> vec({ "1", "5", "9", "3" }, 4);
+    vec.pop_front();
+    if (vec.size() != 3) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
 
 int main()
 {
@@ -464,6 +809,42 @@ int main()
     TestSystem::start_test(test_30_throw_when_emplace_invalid_pos, "test_30_throw_when_emplace_invalid_pos");
     TestSystem::start_test(test_31_assign, "test_31_assign");
     TestSystem::start_test(test_32_clear_mass, "test_32_clear_mass");
+
+
+    TestSystem::start_test(test_33_push_back_int, "test_33_push_back_int");
+    TestSystem::start_test(test_34_push_back_char, "test_34_push_back_char");
+    TestSystem::start_test(test_35_push_back_string, "test_35_push_back_string");
+    TestSystem::start_test(test_36_push_back_mass, "test_36_push_back_mass");
+    TestSystem::start_test(test_37_push_front_int, " test_37_push_front_int");
+    TestSystem::start_test(test_38_push_front_char, "test_38_push_front_char");
+    TestSystem::start_test(test_39_push_back_string, "test_39_push_back_string");
+    TestSystem::start_test(test_40_push_back_mass, "test_40_push_back_mass");
+    TestSystem::start_test(test_41_insert_int, "test_41_insert_int");
+    TestSystem::start_test(test_42_insert_int_it, "test_42_insert_int_it");
+    TestSystem::start_test(test_43_insert_char, "test_43_insert_char");
+    TestSystem::start_test(test_44_insert_char_it, "test_44_insert_char_it");
+    TestSystem::start_test(test_45_insert_string, "test_43_insert_char");
+    TestSystem::start_test(test_46_insert_string_it, "test_44_insert_string_it");
+    TestSystem::start_test(test_47_insert_int_it_count, "test_47_insert_int_it_count");
+    TestSystem::start_test(test_48_insert_char_it_count, "test_48_insert_char_it_count");
+    //TestSystem::start_test(test_49_insert_string_it_count, "test_49_insert_string_it_count");
+    TestSystem::start_test(test_50_erase_int, "test_50_erase_int");
+    TestSystem::start_test(test_51_erase_int_it, "test_51_erase_int_it");
+    TestSystem::start_test(test_52_erase_char, "test_52_erase_char");
+    TestSystem::start_test(test_53_erase_char_it, "test_53_erase_char_it");
+    //TestSystem::start_test(test_54_erase_string, "test_54_erase_string");
+    //TestSystem::start_test(test_55_erase_string_it, "test_55_erase_string_it");
+    TestSystem::start_test(test_56_erase_int_it_count, "test_56_erase_int_it_count");
+    TestSystem::start_test(test_57_erase_char_it_count, "test_57_erase_char_it_count");
+    TestSystem::start_test(test_58_erase_int_it_range, "test_58_erase_int_it_range");
+    TestSystem::start_test(test_59_erase_char_it_range, "test_59_erase_char_it_range");
+    TestSystem::start_test(test_60_pop_back_int, "test_60_pop_back_int");
+    TestSystem::start_test(test_61_pop_back_char, "test_61_pop_back_char");
+    TestSystem::start_test(test_62_pop_back_string, "test_62_pop_back_string");
+    TestSystem::start_test(test_63_pop_front_char, "test_63_pop_front_char");
+    TestSystem::start_test(test_64_pop_front_int, "test_64_pop_front_int");
+    //TestSystem::start_test(test_65_pop_back_string, "test_65_pop_back_string");
+
 
 
     return 0;

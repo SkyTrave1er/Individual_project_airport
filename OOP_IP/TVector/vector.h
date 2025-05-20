@@ -26,6 +26,8 @@ public:
 	class Iterator {
         T* _ptr;
         size_t _pos;
+        size_t _capacity;
+        State* _states;
     public:
         Iterator(T* p, State* states, size_t pos, size_t cap);
 
@@ -59,12 +61,8 @@ public:
             return tmp;
         }
         
-        /*Iterator operator+(Iterator it, size_t offset) {
-            auto temp = it;
-            for (size_t i = 0; i < offset; ++i) {
-                ++temp;
-            }
-            return temp;
+        /*Iterator operator+(size_t k) {
+            return Iterator(_ptr + k, nullptr, 0, 0);
         }*/
 
         bool operator!=(const Iterator& other) const { 
@@ -90,9 +88,13 @@ public:
         }
     };
 
+    friend class Iterator;
+
     class ConstIterator {
         T* _ptr;
         size_t _pos;
+        size_t _capacity;
+        State* _states;
     public:
         ConstIterator(const T* p, const State* states, size_t pos, size_t cap);
 
@@ -126,9 +128,9 @@ public:
             return tmp;
         }
 
-        /*ConstIterator operator+(ConstIterator it, size_t offset) {
+        /*ConstIterator operator+(ConstIterator it, size_t k) {
             auto temp = it;
-            for (size_t i = 0; i < offset; ++i) {
+            for (size_t i = 0; i < k; ++i) {
                 ++temp;
             }
             return temp;
@@ -154,6 +156,7 @@ public:
 
     };
 
+    friend class ConstIterator;
    
     TVector();
     TVector(size_t size);
@@ -185,6 +188,8 @@ public:
     void push_back(const T& value);
     void push_front(const T& value);
     void insert(size_t pos, const T& value);
+    void insert(const Iterator& it, const T& value);
+    void insert(Iterator start, size_t count, const T& value);
     void pop_back();
     void pop_front();
     void erase(size_t pos);
@@ -709,6 +714,54 @@ void TVector<T>::insert(size_t pos, const T& value) {
     ++_size;
 }
 
+template <class T>
+void TVector<T>::insert(const Iterator& it, const T& value) {
+    if (it == end()) {
+        push_back(value);
+        return;
+    }
+    size_t pos = it.get_index();
+    if (pos >= _capacity || _states[pos] != BUSY) {
+        throw std::out_of_range("Invalid position");
+    }
+    if (is_full()) {
+        reserve(_capacity + 15);
+    }
+
+    for (size_t i = _capacity - 1; i > pos; --i) {
+        if (_states[i - 1] == BUSY) {
+            new (_data + i) T(std::move(_data[i - 1]));
+            _data[i - 1].~T();
+            _states[i] = BUSY;
+            _states[i - 1] = EMPTY;
+        }
+    }
+
+    new (_data + pos) T(value);
+    _states[pos] = BUSY;
+    _size++;
+}
+
+template <class T>
+void TVector<T>::insert(Iterator start, size_t count, const T& value) {
+    size_t pos = start.get_index();
+    reserve(_size + count + 15);
+    for (size_t i = _capacity - 1; i > pos + count; --i) {
+        if (_states[i - count] == BUSY) {
+            new (_data + i) T(std::move(_data[i - count]));
+            _data[i - count].~T();
+            _states[i] = BUSY;
+            _states[i - count] = EMPTY;
+        }
+    }
+
+    for (size_t i = pos; i < pos + count; ++i) {
+        new (_data + i) T(value);
+        _states[i] = BUSY;
+        _size++;
+    }
+}
+
 //ÓÄÀËÅÍÈÅ
 
 template <class T>
@@ -735,18 +788,19 @@ void TVector<T>::pop_front() {
     if (is_empty()) {
         throw std::out_of_range("empty");
     }
-    size_t first_busy = 0;
-    for (size_t i = _capacity; i > first_busy; --i) {
+    for (size_t i = 0; i < _capacity; ++i) {
         if (_states[i] == BUSY) {
-            first_busy = i;
+            _data[i].~T();
+            _states[i] = DELETED;
+            _size--;
+            _deleted++;
+
+            if (_deleted * 100 > ((_size + _deleted) * 15)) {
+                reallocate_for_deleted();
+            }
+            return;
         }
     }
-    if (first_busy == 0) {
-        return;
-    }
-    _data[first_busy].~T();
-    _states[first_busy] = EMPTY;
-    _size--;
 }
 
 template <class T>
