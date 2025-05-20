@@ -239,6 +239,192 @@ bool test_15_copy_null_constructor_array_v2()
     return TestSystem::check(expected_result, actual_result);
 }
 
+bool test_16_reserve()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec;
+    vec.reserve(75);
+    if (vec.capacity() != 75) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_17_reserve_new_less_old()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec;
+    vec.reserve(10);
+    if (vec.capacity() != 15) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_18_reserve_int()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec(16);
+    vec.reserve(50);
+    if (vec.capacity() != 60) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_19_reserve_new_less_old_int()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec(16);
+    vec.reserve(20);
+    if (vec.capacity() != 30) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_20_reserve_mass()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({1, 2, 3}, 3);
+    vec.reserve(50);
+    if (vec.capacity() != 60 || vec.size() != 3) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_21_reserve_mass_v2()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    int mass[3] = { 1, 2, 3 };
+    TVector<int> vec(mass, 3);
+    vec.reserve(50);
+    if (vec.capacity() != 60 || vec.size() != 3) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+//bool test_22_reserve_string()
+//{
+//    bool expected_result = true;
+//    bool actual_result = true;
+//    TVector<std::string> vec;
+//    vec.reserve(50);
+//    if (vec.capacity() != 60) actual_result = false;
+//    return TestSystem::check(expected_result, actual_result);
+//}
+
+bool test_23_resize_int_upper()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec(5);
+    vec.resize(50, 1);
+    if (vec.capacity() != 60 || vec.size() != 50) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_24_resize_int_lower()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec(50);
+    vec.resize(5);
+    if (vec.capacity() != 60 || vec.size() != 5) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_25_resize_mass_upper()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({1, 2, 3}, 3);
+    vec.resize(16, 9);
+    for (int i = 3; i < 16; ++i) {
+        if (vec[i] != 9) {
+            actual_result = false;
+        }
+    }
+    if (vec.capacity() != 30 || vec.size() != 16) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_26_resize_mass_lower()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    int mass[50];
+    TVector<int> vec(mass, 50);
+    vec.resize(14);
+    if (vec.capacity() != 60 || vec.size() != 14) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_27_shrink_to_fit_int()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec(14);
+    vec.reserve(100);
+    vec.shrink_to_fit();
+    if (vec.capacity() != 15 || vec.size() != 14) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_28_shrink_to_fit_mass()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    int mass[16];
+    TVector<int> vec(mass, 16);
+    vec.reserve(100);
+    vec.shrink_to_fit();
+    if (vec.capacity() != 30 || vec.size() != 16) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_29_emplace()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({1, 5, 9, 4, 6, 8}, 6);
+    vec.emplace(4, 2);
+    if (vec[4] != 2) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_30_throw_when_emplace_invalid_pos()
+{
+    bool expected_result = false;
+    bool actual_result = true;
+    TVector<int> vec({ 1, 5, 9, 4, 6, 8 }, 6);
+    try {
+        vec.emplace(10, 2);
+    }
+    catch (std::exception& ex) {
+        actual_result = false;
+    }
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_31_assign()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    int mass[5] = { 4, 9, 1, 7, 5 };
+    TVector<int> vec;
+    vec.assign(mass, 3);
+    if (vec[0] != 4 || vec[1] != 9 || vec[2] != 1) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_32_clear_mass()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    int mass[5] = { 4, 9, 1, 7, 5 };
+    TVector<int> vec(mass, 5);
+    vec.clear();
+    if (vec.size() != 0) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
 
 
 int main()
@@ -258,6 +444,27 @@ int main()
     TestSystem::start_test(test_13_copy_constructor_int, "test_13_copy_constructor_int");
     TestSystem::start_test(test_14_copy_constructor_array, "test_14_copy_constructor_array");
     TestSystem::start_test(test_15_copy_null_constructor_array_v2, "test_15_copy_null_constructor_array_v2");
+
+
+
+    TestSystem::start_test(test_16_reserve, "test_16_reserve");
+    TestSystem::start_test(test_17_reserve_new_less_old, "test_17_reserve_new_less_old");
+    TestSystem::start_test(test_18_reserve_int, "test_18_reserve_int");
+    TestSystem::start_test(test_19_reserve_new_less_old_int, "test_19_reserve_new_less_old_int");
+    TestSystem::start_test(test_20_reserve_mass, "test_20_reserve_mass");
+    TestSystem::start_test(test_21_reserve_mass_v2, "test_21_reserve_mass_v2");
+    //TestSystem::start_test(test_22_reserve_string, "test_22_reserve_string");
+    TestSystem::start_test(test_23_resize_int_upper, "test_23_resize_int_upper");
+    TestSystem::start_test(test_24_resize_int_lower, "test_24_resize_int_lower");
+    TestSystem::start_test(test_25_resize_mass_upper, "test_25_resize_mass_upper");
+    TestSystem::start_test(test_26_resize_mass_lower, "test_26_resize_mass_lower");
+    TestSystem::start_test(test_27_shrink_to_fit_int, "test_27_shrink_to_fit_int");
+    TestSystem::start_test(test_28_shrink_to_fit_mass, "test_28_shrink_to_fit_mass");
+    TestSystem::start_test(test_29_emplace, "test_29_emplace");
+    TestSystem::start_test(test_30_throw_when_emplace_invalid_pos, "test_30_throw_when_emplace_invalid_pos");
+    TestSystem::start_test(test_31_assign, "test_31_assign");
+    TestSystem::start_test(test_32_clear_mass, "test_32_clear_mass");
+
 
     return 0;
 }

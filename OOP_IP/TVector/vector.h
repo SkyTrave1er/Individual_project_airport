@@ -597,11 +597,11 @@ void TVector<T>::emplace(size_t pos, const T& value) {
 }
 
 template <class T>
-void TVector<T>::assign(const T* arr, size_t n) {
+void TVector<T>::assign(const T* vec, size_t n) {
     clear(); 
     reserve(n + 15); 
     for (size_t i = 0; i < n; ++i) {
-        push_back(arr[i]); 
+        push_back(vec[i]); 
     }
 }
 
