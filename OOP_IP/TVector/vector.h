@@ -9,13 +9,13 @@ template <class T>
 
 class TVector {
 private:
-    T* _data;
-	size_t _capacity;
-	size_t _size;
-	size_t _deleted;
-	State* _states;
+    T* _data = nullptr;
+	size_t _capacity = 0;
+	size_t _size = 0;
+	size_t _deleted = 0;
+	State* _states = nullptr;
 	
-	bool is_full() const noexcept;
+	
 	void reallocate(size_t new_capacity);
 	size_t find_free_spot() const;
 
@@ -61,9 +61,13 @@ public:
             return tmp;
         }
         
-        /*Iterator operator+(size_t k) {
-            return Iterator(_ptr + k, nullptr, 0, 0);
-        }*/
+        Iterator operator+(size_t k) const {
+            Iterator temp = *this;;
+            for (size_t i = 0; i < k; ++i) {
+                ++temp;
+            }
+            return temp;
+        }
 
         bool operator!=(const Iterator& other) const { 
             return (_ptr != other._ptr); 
@@ -128,13 +132,13 @@ public:
             return tmp;
         }
 
-        /*ConstIterator operator+(ConstIterator it, size_t k) {
-            auto temp = it;
+        ConstIterator operator+(size_t k) const {
+            ConstIterator temp = *this;;
             for (size_t i = 0; i < k; ++i) {
                 ++temp;
             }
             return temp;
-        }*/
+        }
 
         bool operator!=(const ConstIterator& other) const {
             return (_ptr != other._ptr);
@@ -184,6 +188,7 @@ public:
 	size_t capacity() const noexcept;
 
 	bool is_empty() const noexcept;
+    bool is_full() const noexcept;
 	
     void push_back(const T& value);
     void push_front(const T& value);
@@ -229,7 +234,7 @@ public:
     friend int find_last(const TVector<U>& vec, const U& value);
 
     template <class U>
-    friend int* find_all(const TVector<U>& vec, const U& value, size_t& out_size);
+    friend int* find_all(const TVector<U>& vec, const U& value);
 };
 
 
@@ -431,6 +436,7 @@ T& TVector<T>::front() noexcept {
     if (it == end()) {
         throw std::out_of_range("empty");
     }
+    //return _data[0];
     return *it;
 }
 
@@ -440,27 +446,30 @@ const T& TVector<T>::front() const noexcept {
     if (it == end()) {
         throw std::out_of_range("empty");
     }
+    //return _data[0];
     return *it;
 }
 
 template <class T>
 T& TVector<T>::back() noexcept {
-    Iterator it = end();
-    if (it == begin()) {
+    //Iterator it = end();
+    if (is_empty()) {
         throw std::out_of_range("empty");
     }
-    --it;
-    return *it;
+    //--it;
+    //return *it;
+    return _data[_size - 1];
 }
 
 template <class T>
 const T& TVector<T>::back() const noexcept {
-    ConstIterator it = end();
-    if (it == begin()) {
+    //ConstIterator it = end();
+    if (is_empty()) {
         throw std::out_of_range("empty");
     }
-    --it;
-    return *it;
+    //--it;
+    //return *it;
+    return _data[_size - 1];
 }
 
 template <class T>
@@ -934,7 +943,10 @@ void fisher_yates_shuffle(TVector<U>& vec) {
     srand(time(0));
     for (int i = new_size - 1; i > 0; i--) {
         int j = rand() % (i + 1);
-        swap(&vec[i], &vec[j]);
+        //swap(&vec[i], &vec[j]);
+        int temp = vec[i];
+        vec[i] = vec[j];
+        vec[j] = temp;
     }
 }
 
@@ -992,8 +1004,8 @@ int find_last(const TVector<U>& vec, const U& value) {
 }
 
 template <class U>
-int* find_all(const TVector<U>& vec, const U& value, size_t& out_size) {
-    out_size = 0;
+int* find_all(const TVector<U>& vec, const U& value) {
+    size_t out_size = 0;
     for (size_t i = 0; i < vec._capacity; ++i) {
         if (vec._states[i] == BUSY && vec._data[i] == value) {
             out_size++;

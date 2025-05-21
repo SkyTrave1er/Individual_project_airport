@@ -772,6 +772,396 @@ bool test_65_pop_back_string()
     return TestSystem::check(expected_result, actual_result);
 }
 
+bool test_66_data_for_empty_vector()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec;
+    const int* a = vec.data();
+    if (a != nullptr) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_67_data_for_vector_with_elem_1()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({ 1,2,3,4,5,6,7,8,9,10 }, 10);
+    const int* a = vec.data();
+    if (a == nullptr) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_68_data_for_vector_with_elem_2()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({ 1,2,3,4,5,6,7,8,9,10 }, 10);
+    const int* a = vec.data();
+    if (1 != *a || 2 != a[1] || 10 != a[9]) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_69_data_for_vector_with_elem_3()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({ 1,2,3,4,5,6,7,8,9,10 }, 10);
+    const int* a = vec.data();
+    vec.push_back(1);
+    vec.push_back(2);
+    vec.push_back(3);
+    vec.push_back(4);
+    vec.push_back(5);
+    const int* b = vec.data();
+    if (b == nullptr || b[10] != 1) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_70_back_for_empty_vector()
+{
+    bool expected_result = false;
+    bool actual_result = true;
+    TVector<int> vec;
+    try {
+        auto a = vec.back();
+    }
+    catch (std::exception& ex) {
+        actual_result = false;
+    }
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_71_back_for_vector_with_elem_v1()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({ 1,2,3,4,5,6,7,8,9,10 }, 10);
+    int a = vec.back();
+    if (a != 10) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_72_throw_when_back_for_vector_with_elem()
+{
+    bool expected_result = false;
+    bool actual_result = true;
+    TVector<int> vec({ 1 });
+    int a = vec.back();
+    if (a != 1) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_73_back_for_vector_with_elem_v2()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({ 1 });
+    vec.back() = 4;
+    if (vec.back() != 4) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_74_back_for_vector_with_elem_v3()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({ 1 });
+    vec.push_back(5);
+    if (vec.back() != 5) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_75_back_for_vector_with_elem_v4()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({ 1, 2, 3 }, 3);
+    vec.pop_back();
+    if (vec.back() != 2) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_76_front_for_empty_vector()
+{
+    bool expected_result = false;
+    bool actual_result = true;
+    TVector<int> vec;
+    try {
+        auto a = vec.front();
+    }
+    catch (std::exception& ex) {
+        actual_result = false;
+    }
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_77_front_for_vector_with_elem_v1()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({ 1,2,3,4,5,6,7,8,9,10 }, 10);
+    int a = vec.front();
+    if (a != 1) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_78_throw_when_front_for_vector_with_elem()
+{
+    bool expected_result = false;
+    bool actual_result = true;
+    TVector<int> vec({ 1 });
+    int a = vec.front();
+    if (a != 1) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_79_front_for_vector_with_elem_v2()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({ 1 });
+    vec.front() = 4;
+    if (vec.back() != 4) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_80_front_for_vector_with_elem_v3()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({ 1 });
+    vec.push_back(5);
+    if (vec.back() != 5) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_81_front_for_vector_with_elem_v4()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({ 1, 2, 3 }, 3);
+    vec.pop_front();
+    if (vec.front() != 2) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_82_at()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({ 10, 20, 30, 40, 50 }, 5);
+    try {
+        int a = (vec.at(0) == 10);
+        int b = (vec.at(2) == 30);
+        int c = (vec.at(4) == 50);
+        vec.at(1) = 25;
+        if ((vec.at(1) != 25)) actual_result = false;
+    }
+    catch (std::exception& ex) {
+        actual_result = false;
+    }
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_83_at_throw_when_out_of_range()
+{
+    bool expected_result = false;
+    bool actual_result = true;
+    TVector<std::string> vec({ "a", "b", "c" }, 3);
+    try {
+        vec.at(3);
+    }
+    catch (const std::out_of_range&) {
+        actual_result = false;
+    }
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_84_at_throw_when_minus_one()
+{
+    bool expected_result = false;
+    bool actual_result = true;
+    TVector<std::string> vec({ "a", "b", "c" }, 3);
+    try {
+        vec.at(-1);
+    }
+    catch (const std::out_of_range&) {
+        actual_result = false;
+    }
+
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_85_is_full()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 }, 15);
+    actual_result = vec.is_full();
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_86_throw_when_is_not_full()
+{
+    bool expected_result = false;
+    bool actual_result = true;
+    TVector<int> vec({ 1, 2, 3, 4, 5, 6, 7 }, 7);
+    vec.pop_back();
+    actual_result = vec.is_full();
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_87_is_empty()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec;
+    actual_result = vec.is_empty();
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_88_throw_when_is_not_empty()
+{
+    bool expected_result = false;
+    bool actual_result = true;
+    TVector<int> vec({ 1, 2, 3, 4, 5, 6, 7 }, 7);
+    vec.pop_back();
+    actual_result = vec.is_empty();
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_89_begin_empty()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec;
+    if (vec.begin() != vec.end()) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_90_begin_one_elem()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({ 7 });
+    if (*vec.begin() != 7 || vec.begin() + 1 != vec.end()) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_91_begin_erase()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({ 1, 2, 3, 4, 5, 6, 7 }, 7);
+    vec.erase(vec.begin(), 2);
+    if (*vec.begin() != 3) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_92_begin_mass()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({ 1, 2, 3, 4, 5, 6, 7 }, 7);
+    for (int i = 0; i < vec.size(); i++) {
+        if (*(vec.begin() + i) != vec[i]) actual_result = false;
+    }
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_93_end()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({ 1, 2, 3, 4, 5, 6, 7 }, 7);
+    vec.erase(vec.begin(), 2);
+    if (*vec.begin() != 3) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_94_end_2()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({ 1, 2, 3, 4, 5, 6, 7 }, 7);
+    vec.erase(vec.begin(), 2);
+    if (*vec.begin() != 3) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_95_end_3()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({ 1, 2, 3, 4, 5, 6, 7 }, 7);
+    for (int i = 0; i < vec.size(); i++) {
+        if (*(vec.begin() + i) != vec[i]) actual_result = false;
+    }
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_96_shuffle()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({ 1, 2, 3, 4, 5, 6, 7 }, 7);
+    fisher_yates_shuffle(vec);
+    if (vec[0] == 1) return false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+//bool test_97_sort()
+//{
+//    bool expected_result = true;
+//    bool actual_result = true;
+//    TVector<int> vec({ 7, 5, 2, 6, 1, 4, 3 }, 7);
+//    quick_sort(vec);
+//    for (int i = 0; i < vec.size(); ++i) {
+//        if (vec[i] != i + 1) {
+//            actual_result = false;
+//        }
+//    }
+//    return TestSystem::check(expected_result, actual_result);
+//}
+
+bool test_98_find_first()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({ 1, 2, 3, 3, 5, 6, 7 }, 7);
+    int a = find_first(vec, 3);
+    if (a != 2) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_99_find_last()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({ 1, 2, 3, 3, 5, 6, 7 }, 7);
+    int a = find_last(vec, 3);
+    if (a != 3) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_100_find_all()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec({ 1, 2, 2, 4, 5, 6, 7 }, 7);
+    int* a = find_all(vec, 2);
+    if (a[0] != 1 || a[1] != 2 || a == nullptr) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+
+
+
 int main()
 {
     TestSystem::start_test(test_1_default_constructor_int, "test_1_default_constructor_int");
@@ -844,6 +1234,45 @@ int main()
     TestSystem::start_test(test_63_pop_front_char, "test_63_pop_front_char");
     TestSystem::start_test(test_64_pop_front_int, "test_64_pop_front_int");
     //TestSystem::start_test(test_65_pop_back_string, "test_65_pop_back_string");
+
+
+
+    TestSystem::start_test(test_66_data_for_empty_vector, "test_66_data_for_empty_vector");
+    TestSystem::start_test(test_67_data_for_vector_with_elem_1, "test_67_data_for_vector_with_elem_1");
+    TestSystem::start_test(test_68_data_for_vector_with_elem_2, "test_68_data_for_vector_with_elem_2");
+    TestSystem::start_test(test_69_data_for_vector_with_elem_3, "test_69_data_for_vector_with_elem_3");
+    //TestSystem::start_test(test_70_back_for_empty_vector, "test_70_back_for_empty_vector");
+    TestSystem::start_test(test_71_back_for_vector_with_elem_v1, "test_71_back_for_vector_with_elem_v1");
+    TestSystem::start_test(test_72_throw_when_back_for_vector_with_elem, "test_72_back_for_vector_with_elem");
+    TestSystem::start_test(test_73_back_for_vector_with_elem_v2, "test_73_back_for_vector_with_elem_v2");
+    TestSystem::start_test(test_74_back_for_vector_with_elem_v3, "test_74_back_for_vector_with_elem_v3");
+    TestSystem::start_test(test_75_back_for_vector_with_elem_v4, "test_75_back_for_vector_with_elem_v4");
+    //TestSystem::start_test(test_76_front_for_empty_vector, "test_76_front_for_empty_vector");
+    TestSystem::start_test(test_77_front_for_vector_with_elem_v1, "test_77_front_for_vector_with_elem_v1");
+    TestSystem::start_test(test_78_throw_when_front_for_vector_with_elem, "test_78_throw_when_front_for_vector_with_elem");
+    TestSystem::start_test(test_79_front_for_vector_with_elem_v2, "test_79_front_for_vector_with_elem_v2");
+    TestSystem::start_test(test_80_front_for_vector_with_elem_v3, "test_80_front_for_vector_with_elem_v3");
+    TestSystem::start_test(test_81_front_for_vector_with_elem_v4, "test_81_front_for_vector_with_elem_v4");
+    TestSystem::start_test(test_82_at, "test_82_at");
+    TestSystem::start_test(test_83_at_throw_when_out_of_range, "test_83_at_throw_when_out_of_range");
+    TestSystem::start_test(test_84_at_throw_when_minus_one, "test_84_at_throw_when_minus_one");
+    TestSystem::start_test(test_85_is_full, "test_85_is_full");
+    TestSystem::start_test(test_86_throw_when_is_not_full, "test_86_throw_when_is_not_full");
+    TestSystem::start_test(test_87_is_empty, "test_87_is_empty");
+    TestSystem::start_test(test_88_throw_when_is_not_empty, "test_88_throw_when_is_not_empty");
+    //TestSystem::start_test(test_89_begin_empty, "test_89_begin_empty");
+    //TestSystem::start_test(test_90_begin_one_elem, "test_90_begin_one_elem");
+    TestSystem::start_test(test_91_begin_erase, "test_91_begin_erase");
+    TestSystem::start_test(test_92_begin_mass, "test_92_begin_mass");
+    TestSystem::start_test(test_93_end, "test_93_end");
+    TestSystem::start_test(test_94_end_2, "test_94_end_2");
+    TestSystem::start_test(test_95_end_3, "test_95_end_3");
+    TestSystem::start_test(test_96_shuffle, "test_96_shuffle");
+    //TestSystem::start_test(test_97_sort, "test_97_sort");
+    TestSystem::start_test(test_98_find_first, "test_98_find_first");
+    TestSystem::start_test(test_99_find_last, "test_99_find_last");
+    TestSystem::start_test(test_100_find_all, "test_100_find_all");
+    
 
 
 
