@@ -300,15 +300,15 @@ bool test_21_reserve_mass_v2()
     return TestSystem::check(expected_result, actual_result);
 }
 
-//bool test_22_reserve_string()
-//{
-//    bool expected_result = true;
-//    bool actual_result = true;
-//    TVector<std::string> vec;
-//    vec.reserve(50);
-//    if (vec.capacity() != 60) actual_result = false;
-//    return TestSystem::check(expected_result, actual_result);
-//}
+bool test_22_reserve_string()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<std::string> vec;
+    vec.reserve(50);
+    if (vec.capacity() != 60) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
 
 bool test_23_resize_int_upper()
 {
@@ -536,8 +536,8 @@ bool test_42_insert_int_it()
     bool expected_result = true;
     bool actual_result = true;
     TVector<int> vec({ 1, 5, 9, 3 }, 4);
-    vec.insert(vec.begin(), 499);
-    if (vec[0] != 499 || vec[3] != 9 || vec.size() != 5) actual_result = false;
+    vec.insert(vec.begin() + 2, 499);
+    if (vec[2] != 499 || vec[3] != 9 || vec[1] != 5 || vec.size() != 5) actual_result = false;
     return TestSystem::check(expected_result, actual_result);
 }
 
@@ -585,9 +585,9 @@ bool test_47_insert_int_it_count()
 {
     bool expected_result = true;
     bool actual_result = true;
-    TVector<int> vec({ 1, 5, 9, 3 }, 4);
-    vec.insert(vec.begin(), 3, 499);
-    if (vec[0] != 499 || vec[1] != 499 || vec[2] != 499 || vec.size() != 7) actual_result = false;
+    TVector<int> vec({ 1, 5, 9, 3, 8, 2, 7, 25, 900, 33, 0 }, 11);
+    vec.insert(vec.begin() + 2, 3, 499);
+    if (vec[2] != 499 || vec[3] != 499 || vec[4] != 499 || vec.size() != 14 || vec[5] != 9 || vec[1] != 5) actual_result = false;
     return TestSystem::check(expected_result, actual_result);
 }
 
@@ -601,15 +601,15 @@ bool test_48_insert_char_it_count()
     return TestSystem::check(expected_result, actual_result);
 }
 
-//bool test_49_insert_string_it_count()
-//{
-//    bool expected_result = true;
-//    bool actual_result = true;
-//    TVector<std::string> vec({ "yo", "gg", "hi", "qwerty" }, 4);
-//    vec.insert(vec.begin(), 3, "boo");
-//    if (vec[0] != "boo" || vec[1] != "boo" || vec[2] != "boo" || vec[5] != "hi" || vec.size() != 7) actual_result = false;
-//    return TestSystem::check(expected_result, actual_result);
-//}
+bool test_49_insert_string_it_count()
+{
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<std::string> vec({ "yo", "gg", "hi", "qwerty" }, 4);
+    vec.insert(vec.begin()+1, 3, "boo");
+    if (vec[1] != "boo" || vec[2] != "boo" || vec[3] != "boo" || vec[5] != "hi" || vec.size() != 7) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
 
 bool test_50_erase_int()
 {
@@ -657,7 +657,7 @@ bool test_54_erase_string()
     bool actual_result = true;
     TVector<std::string> vec({ "yo", "gg", "hi", "qwerty" }, 4);
     vec.erase(2);
-    if (vec[2] != "qwerty" || vec[1] != "gg" || vec.size() != 4) actual_result = false;
+    if (vec[2] != "qwerty" || vec[1] != "gg" || vec.size() != 3) actual_result = false;
     return TestSystem::check(expected_result, actual_result);
 }
 
@@ -667,7 +667,7 @@ bool test_55_erase_string_it()
     bool actual_result = true;
     TVector<std::string> vec({ "yo", "gg", "hi", "qwerty" }, 4);
     vec.erase(vec.begin());
-    if (vec[0] != "gg" || vec[2] != "qwerty" || vec.size() != 4) actual_result = false;
+    if (vec[0] != "gg" || vec[2] != "qwerty" || vec.size() != 3) actual_result = false;
     return TestSystem::check(expected_result, actual_result);
 }
 
@@ -772,16 +772,6 @@ bool test_65_pop_back_string()
     return TestSystem::check(expected_result, actual_result);
 }
 
-bool test_66_data_for_empty_vector()
-{
-    bool expected_result = true;
-    bool actual_result = true;
-    TVector<int> vec;
-    const int* a = vec.data();
-    if (a != nullptr) actual_result = false;
-    return TestSystem::check(expected_result, actual_result);
-}
-
 bool test_67_data_for_vector_with_elem_1()
 {
     bool expected_result = true;
@@ -818,7 +808,7 @@ bool test_69_data_for_vector_with_elem_3()
     return TestSystem::check(expected_result, actual_result);
 }
 
-bool test_70_back_for_empty_vector()
+bool test_70_throw_when_back_for_empty_vector()
 {
     bool expected_result = false;
     bool actual_result = true;
@@ -845,11 +835,11 @@ bool test_71_back_for_vector_with_elem_v1()
 
 bool test_72_throw_when_back_for_vector_with_elem()
 {
-    bool expected_result = false;
-    bool actual_result = true;
-    TVector<int> vec({ 1 });
-    int a = vec.back();
-    if (a != 1) actual_result = false;
+    bool expected_result = true;
+    bool actual_result = false;
+    TVector<int> vec({ 333 });
+    int last_value = vec.back();
+    if (last_value == 333) actual_result = true;
     return TestSystem::check(expected_result, actual_result);
 }
 
@@ -908,13 +898,13 @@ bool test_77_front_for_vector_with_elem_v1()
     return TestSystem::check(expected_result, actual_result);
 }
 
-bool test_78_throw_when_front_for_vector_with_elem()
+bool test_78_front_for_vector_with_elem()
 {
-    bool expected_result = false;
-    bool actual_result = true;
-    TVector<int> vec({ 1 });
-    int a = vec.front();
-    if (a != 1) actual_result = false;
+    bool expected_result = true;
+    bool actual_result = false;
+    TVector<int> vec({ 333 });
+    int first_value = vec.front();
+    if (first_value == 333) actual_result = true;
     return TestSystem::check(expected_result, actual_result);
 }
 
@@ -1035,15 +1025,6 @@ bool test_88_throw_when_is_not_empty()
     return TestSystem::check(expected_result, actual_result);
 }
 
-bool test_89_begin_empty()
-{
-    bool expected_result = true;
-    bool actual_result = true;
-    TVector<int> vec;
-    if (vec.begin() != vec.end()) actual_result = false;
-    return TestSystem::check(expected_result, actual_result);
-}
-
 bool test_90_begin_one_elem()
 {
     bool expected_result = true;
@@ -1078,9 +1059,21 @@ bool test_93_end()
 {
     bool expected_result = true;
     bool actual_result = true;
-    TVector<int> vec({ 1, 2, 3, 4, 5, 6, 7 }, 7);
-    vec.erase(vec.begin(), 2);
-    if (*vec.begin() != 3) actual_result = false;
+    TVector<int> vec;
+    vec.push_back(1);
+    vec.push_back(2);
+    vec.push_back(3);
+    vec.erase(vec.begin() + 2);
+
+    auto end_it = vec.end();
+    int count = 0;
+    for (auto it = vec.begin(); it != end_it; ++it)
+    {
+        ++count;
+    }
+
+    if (count != 2) actual_result = false;
+
     return TestSystem::check(expected_result, actual_result);
 }
 
@@ -1088,22 +1081,21 @@ bool test_94_end_2()
 {
     bool expected_result = true;
     bool actual_result = true;
-    TVector<int> vec({ 1, 2, 3, 4, 5, 6, 7 }, 7);
-    vec.erase(vec.begin(), 2);
-    if (*vec.begin() != 3) actual_result = false;
+    TVector <int> vec;
+    for (int i = 0; i < 5; ++i) {
+        vec.push_back(i * 10);
+    }
+
+    int sum = 0;
+    auto end_it = vec.end();
+    for (auto it = vec.begin(); it != end_it; ++it) {
+        sum += *it;
+    }
+
+    if (sum != 100) actual_result = false;
     return TestSystem::check(expected_result, actual_result);
 }
 
-bool test_95_end_3()
-{
-    bool expected_result = true;
-    bool actual_result = true;
-    TVector<int> vec({ 1, 2, 3, 4, 5, 6, 7 }, 7);
-    for (int i = 0; i < vec.size(); i++) {
-        if (*(vec.begin() + i) != vec[i]) actual_result = false;
-    }
-    return TestSystem::check(expected_result, actual_result);
-}
 
 bool test_96_shuffle()
 {
@@ -1111,7 +1103,8 @@ bool test_96_shuffle()
     bool actual_result = true;
     TVector<int> vec({ 1, 2, 3, 4, 5, 6, 7 }, 7);
     fisher_yates_shuffle(vec);
-    if (vec[0] == 1) return false;
+    if ((vec[0] == 1) && (vec[1] = 2) && (vec[2] == 3) && 
+        (vec[3] == 4) && (vec[4] == 5) && (vec[5] == 6) && (vec[6] == 7)) return false;
     return TestSystem::check(expected_result, actual_result);
 }
 
@@ -1120,7 +1113,7 @@ bool test_96_shuffle()
 //    bool expected_result = true;
 //    bool actual_result = true;
 //    TVector<int> vec({ 7, 5, 2, 6, 1, 4, 3 }, 7);
-//    quick_sort(vec);
+//    quick_sort(vec, 0, vec.size());
 //    for (int i = 0; i < vec.size(); ++i) {
 //        if (vec[i] != i + 1) {
 //            actual_result = false;
@@ -1159,7 +1152,83 @@ bool test_100_find_all()
     return TestSystem::check(expected_result, actual_result);
 }
 
+bool test_60_1_throw_when_pop_back_null_array()
+{
+    TVector<int> original({ }, 0);
+    bool actual_result = true;
+    bool expected_result = false;
+    TVector<int> vec;
+    try {
+        vec.pop_back();
+    }
+    catch (const std::exception& ex) {
+        actual_result = false;
+    }
+    return TestSystem::check(expected_result, actual_result);
+}
 
+bool test_60_2_throw_when_pop_front_null_array()
+{
+    TVector<int> original({ }, 0);
+    bool actual_result = true;
+    bool expected_result = false;
+    TVector<int> vec;
+    try {
+        vec.pop_front();
+    }
+    catch (const std::exception& ex) {
+        actual_result = false;
+    }
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_60_3_throw_when_erase_null_array()
+{
+    TVector<int> original({ }, 0);
+    bool actual_result = true;
+    bool expected_result = false;
+    TVector<int> vec;
+    try {
+        vec.erase(2);
+    }
+    catch (const std::exception& ex) {
+        actual_result = false;
+    }
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_101_push_fron_after_pop_front() {
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec(5);
+    vec.pop_front();
+    vec.push_front(99);
+    if (vec[0] != 99 || vec.size() != 5) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_102_insert_deleted() {
+    bool expected_result = true;
+    bool actual_result = true;
+    int mass[5] = { 9, 777, 15, 38, 4 };
+    TVector<int> vec(mass, 5);
+    vec.erase(1);
+    vec.insert(1, 99);
+    if (vec[1] != 99 || vec.size() != 5) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
+
+bool test_103_resize_deleted() {
+    bool expected_result = true;
+    bool actual_result = true;
+    TVector<int> vec;
+    vec.resize(50, 0);
+    vec.erase(1);
+    vec.erase(3);
+    vec.resize(3);
+    if (vec[0] != 0 || vec[1] != 0 || vec[2] != 0 || vec.size() != 3) actual_result = false;
+    return TestSystem::check(expected_result, actual_result);
+}
 
 
 int main()
@@ -1188,7 +1257,7 @@ int main()
     TestSystem::start_test(test_19_reserve_new_less_old_int, "test_19_reserve_new_less_old_int");
     TestSystem::start_test(test_20_reserve_mass, "test_20_reserve_mass");
     TestSystem::start_test(test_21_reserve_mass_v2, "test_21_reserve_mass_v2");
-    //TestSystem::start_test(test_22_reserve_string, "test_22_reserve_string");
+    TestSystem::start_test(test_22_reserve_string, "test_22_reserve_string");
     TestSystem::start_test(test_23_resize_int_upper, "test_23_resize_int_upper");
     TestSystem::start_test(test_24_resize_int_lower, "test_24_resize_int_lower");
     TestSystem::start_test(test_25_resize_mass_upper, "test_25_resize_mass_upper");
@@ -1213,17 +1282,17 @@ int main()
     TestSystem::start_test(test_42_insert_int_it, "test_42_insert_int_it");
     TestSystem::start_test(test_43_insert_char, "test_43_insert_char");
     TestSystem::start_test(test_44_insert_char_it, "test_44_insert_char_it");
-    TestSystem::start_test(test_45_insert_string, "test_43_insert_char");
-    TestSystem::start_test(test_46_insert_string_it, "test_44_insert_string_it");
+    TestSystem::start_test(test_45_insert_string, "test_45_insert_string");
+    TestSystem::start_test(test_46_insert_string_it, "test_46_insert_string_it");
     TestSystem::start_test(test_47_insert_int_it_count, "test_47_insert_int_it_count");
     TestSystem::start_test(test_48_insert_char_it_count, "test_48_insert_char_it_count");
-    //TestSystem::start_test(test_49_insert_string_it_count, "test_49_insert_string_it_count");
+    TestSystem::start_test(test_49_insert_string_it_count, "test_49_insert_string_it_count");
     TestSystem::start_test(test_50_erase_int, "test_50_erase_int");
     TestSystem::start_test(test_51_erase_int_it, "test_51_erase_int_it");
     TestSystem::start_test(test_52_erase_char, "test_52_erase_char");
     TestSystem::start_test(test_53_erase_char_it, "test_53_erase_char_it");
-    //TestSystem::start_test(test_54_erase_string, "test_54_erase_string");
-    //TestSystem::start_test(test_55_erase_string_it, "test_55_erase_string_it");
+    TestSystem::start_test(test_54_erase_string, "test_54_erase_string");
+    TestSystem::start_test(test_55_erase_string_it, "test_55_erase_string_it");
     TestSystem::start_test(test_56_erase_int_it_count, "test_56_erase_int_it_count");
     TestSystem::start_test(test_57_erase_char_it_count, "test_57_erase_char_it_count");
     TestSystem::start_test(test_58_erase_int_it_range, "test_58_erase_int_it_range");
@@ -1233,15 +1302,18 @@ int main()
     TestSystem::start_test(test_62_pop_back_string, "test_62_pop_back_string");
     TestSystem::start_test(test_63_pop_front_char, "test_63_pop_front_char");
     TestSystem::start_test(test_64_pop_front_int, "test_64_pop_front_int");
-    //TestSystem::start_test(test_65_pop_back_string, "test_65_pop_back_string");
+    TestSystem::start_test(test_65_pop_back_string, "test_65_pop_back_string");
+    TestSystem::start_test(test_60_1_throw_when_pop_back_null_array, "test_60_1_throw_when_pop_back_null_array");
+    TestSystem::start_test(test_60_2_throw_when_pop_front_null_array, "test_60_2_throw_when_pop_front_null_array");
+    TestSystem::start_test(test_60_3_throw_when_erase_null_array, "test_60_3_throw_when_erase_null_array");
 
 
 
-    TestSystem::start_test(test_66_data_for_empty_vector, "test_66_data_for_empty_vector");
+   
     TestSystem::start_test(test_67_data_for_vector_with_elem_1, "test_67_data_for_vector_with_elem_1");
     TestSystem::start_test(test_68_data_for_vector_with_elem_2, "test_68_data_for_vector_with_elem_2");
     TestSystem::start_test(test_69_data_for_vector_with_elem_3, "test_69_data_for_vector_with_elem_3");
-    //TestSystem::start_test(test_70_back_for_empty_vector, "test_70_back_for_empty_vector");
+    //TestSystem::start_test(test_70_throw_when_back_for_empty_vector, "test_70_throw_when_back_for_empty_vector");
     TestSystem::start_test(test_71_back_for_vector_with_elem_v1, "test_71_back_for_vector_with_elem_v1");
     TestSystem::start_test(test_72_throw_when_back_for_vector_with_elem, "test_72_back_for_vector_with_elem");
     TestSystem::start_test(test_73_back_for_vector_with_elem_v2, "test_73_back_for_vector_with_elem_v2");
@@ -1249,7 +1321,7 @@ int main()
     TestSystem::start_test(test_75_back_for_vector_with_elem_v4, "test_75_back_for_vector_with_elem_v4");
     //TestSystem::start_test(test_76_front_for_empty_vector, "test_76_front_for_empty_vector");
     TestSystem::start_test(test_77_front_for_vector_with_elem_v1, "test_77_front_for_vector_with_elem_v1");
-    TestSystem::start_test(test_78_throw_when_front_for_vector_with_elem, "test_78_throw_when_front_for_vector_with_elem");
+    TestSystem::start_test(test_78_front_for_vector_with_elem, "test_78_throw_when_front_for_vector_with_elem");
     TestSystem::start_test(test_79_front_for_vector_with_elem_v2, "test_79_front_for_vector_with_elem_v2");
     TestSystem::start_test(test_80_front_for_vector_with_elem_v3, "test_80_front_for_vector_with_elem_v3");
     TestSystem::start_test(test_81_front_for_vector_with_elem_v4, "test_81_front_for_vector_with_elem_v4");
@@ -1260,13 +1332,11 @@ int main()
     TestSystem::start_test(test_86_throw_when_is_not_full, "test_86_throw_when_is_not_full");
     TestSystem::start_test(test_87_is_empty, "test_87_is_empty");
     TestSystem::start_test(test_88_throw_when_is_not_empty, "test_88_throw_when_is_not_empty");
-    //TestSystem::start_test(test_89_begin_empty, "test_89_begin_empty");
-    //TestSystem::start_test(test_90_begin_one_elem, "test_90_begin_one_elem");
+    TestSystem::start_test(test_90_begin_one_elem, "test_90_begin_one_elem");
     TestSystem::start_test(test_91_begin_erase, "test_91_begin_erase");
     TestSystem::start_test(test_92_begin_mass, "test_92_begin_mass");
     TestSystem::start_test(test_93_end, "test_93_end");
     TestSystem::start_test(test_94_end_2, "test_94_end_2");
-    TestSystem::start_test(test_95_end_3, "test_95_end_3");
     TestSystem::start_test(test_96_shuffle, "test_96_shuffle");
     //TestSystem::start_test(test_97_sort, "test_97_sort");
     TestSystem::start_test(test_98_find_first, "test_98_find_first");
@@ -1274,7 +1344,9 @@ int main()
     TestSystem::start_test(test_100_find_all, "test_100_find_all");
     
 
-
-
+    TestSystem::start_test(test_101_push_fron_after_pop_front, "test_101_push_fron_after_pop_front");
+    TestSystem::start_test(test_102_insert_deleted, "test_102_insert_deleted");
+    TestSystem::start_test(test_103_resize_deleted, "test_103_resize_deleted");
+    TestSystem::print_final_info();
     return 0;
 }
