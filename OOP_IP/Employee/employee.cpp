@@ -1,1 +1,2 @@
-#include "../Employee/employee.h"
+//  Copyright 2025 Sky_Trav1er
+#include "employee.h"

@@ -1,3 +1,4 @@
+//  Copyright 2025 Sky_Trav1er
 #pragma once
 #include "../Date/date.h"
 
@@ -5,17 +6,17 @@
 #define PASSPORT_H
 
 class Passport {
-	int _series;
-	int _number;
-	Date _issue_date;
-	Date _validaty_date;
-public:
-	Passport(int series, int number);
+    int _series;
+    int _number;
+    Date _issue_date;
+    Date _validaty_date;
 
-	int get_series() const;
-	int get_number() const;
+ public:
+    Passport(int series, int number);
 
-	bool is_valid(const Date current_date) const;
+    int get_series() const;
+    int get_number() const;
+
+    bool is_valid(const Date current_date) const;
 };
-#endif // PASSPORT_H
-
+#endif  // PASSPORT_H

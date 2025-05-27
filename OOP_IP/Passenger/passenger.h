@@ -1,3 +1,4 @@
+//  Copyright 2025 Sky_Trav1er
 #pragma once
 #include "../Passport/passport.h"
 #include "../TVector/vector.h"
@@ -8,12 +9,12 @@
 #define PASSENGER_H
 
 class Passenger : public Person {
-	Passport _passport;
-	TVector<Flights*> _flights;
-public:
-	Passenger(const FIO& fio, const Date& birth_date, const Passport& passport);
-	const Passport& get_passport() const;
+    Passport _passport;
+    TVector<Flights*> _flights;
+
+ public:
+    Passenger(const FIO& fio, const Date& birth_date, const Passport& passport);
+    const Passport& get_passport() const;
 };
 
-#endif // PASSENGER_H
-
+#endif  // PASSENGER_H

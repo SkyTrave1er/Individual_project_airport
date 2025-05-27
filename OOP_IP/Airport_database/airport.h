@@ -1,10 +1,10 @@
 //  Copyright 2025 Sky_Trav1er
+#ifndef AIRPORT_H
+#define AIRPORT_H
+
 #pragma once
 #include "../Flights/flights.h"
 #include <string>
-
-#ifndef AIRPORT_H
-#define AIRPORT_H
 
 class Airport {
     TVector<Flights> _flights;
@@ -18,4 +18,4 @@ class Airport {
     Flights* find_flight(const std::string& number);
 };
 
-#endif  // AIRPORT_H 
+#endif  // AIRPORT_H

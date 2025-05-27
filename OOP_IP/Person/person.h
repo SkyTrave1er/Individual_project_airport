@@ -1,3 +1,4 @@
+//  Copyright 2025 Sky_Trav1er
 #pragma once
 #include "../Date/date.h"
 #include "../FIO/fio.h"
@@ -6,10 +7,11 @@
 #define PERSON_H
 
 class Person {
-	FIO _fio;
-	Date _birth_date;
-public:
-	Person(const FIO& fio, const Date& birth_date);
-	FIO get_fio() const;
+    FIO _fio;
+    Date _birth_date;
+
+ public:
+    Person(const FIO& fio, const Date& birth_date);
+    FIO get_fio() const;
 };
-#endif // PERSON_H
+#endif  // PERSON_H
