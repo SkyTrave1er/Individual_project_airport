@@ -1,10 +1,11 @@
 //  Copyright 2025 Sky_Trav1er
-#include "../Person/person.h"
-#include <string>
 #pragma once
 
 #ifndef EMPLOYEE_H
 #define EMPLOYEE_H
+
+#include "../Person/person.h"
+#include <string>
 
 enum class Position { PILOT, STEWARD, TECHNICAN};
 

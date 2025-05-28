@@ -1,10 +1,11 @@
 //  Copyright 2025 Sky_Trav1er
 #pragma once
-#include "../Date/date.h"
-#include "../FIO/fio.h"
 
 #ifndef PERSON_H
 #define PERSON_H
+
+#include "../Date/date.h"
+#include "../FIO/fio.h"
 
 class Person {
     FIO _fio;

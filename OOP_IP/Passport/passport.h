@@ -1,9 +1,10 @@
 //  Copyright 2025 Sky_Trav1er
 #pragma once
-#include "../Date/date.h"
 
 #ifndef PASSPORT_H
 #define PASSPORT_H
+
+#include "../Date/date.h"
 
 class Passport {
     int _series;

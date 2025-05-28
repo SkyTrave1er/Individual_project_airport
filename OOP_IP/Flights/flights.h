@@ -1,16 +1,17 @@
+//  Copyright 2025 Sky_Trav1er
+
 #pragma once
+
+#ifndef FLIGHTS_H
+#define FLIGHTS_H
+
 #include "../Time/time.h"
 #include "../Destination/destination.h"
 #include "../TVector/vector.h"
 #include "../Plane/plane.h"
 #include "../Passenger/passenger.h"
-//  Copyright 2025 Sky_Trav1er
 #include "../Employee/employee.h"
-
 #include <string>
-
-#ifndef FLIGHTS_H
-#define FLIGHTS_H
 
 enum class Flight_status { SCHEDULED, DELAYED, CANCELLED};
 

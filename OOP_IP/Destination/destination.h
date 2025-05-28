@@ -1,9 +1,11 @@
 //  Copyright 2025 Sky_Trav1er
 #pragma once
-#include <iostream>
-#include <string>
+
 #ifndef DESTINATION_H
 #define DESTINATION_H
+
+#include <iostream>
+#include <string>
 
 class Destination {
     std::string _country;

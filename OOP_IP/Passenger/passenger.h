@@ -1,12 +1,13 @@
 //  Copyright 2025 Sky_Trav1er
 #pragma once
+
+#ifndef PASSENGER_H
+#define PASSENGER_H
+
 #include "../Passport/passport.h"
 #include "../TVector/vector.h"
 #include "../Person/person.h"
 #include "../Flights/flights.h"
-
-#ifndef PASSENGER_H
-#define PASSENGER_H
 
 class Passenger : public Person {
     Passport _passport;

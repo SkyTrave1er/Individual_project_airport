@@ -1,10 +1,11 @@
 //  Copyright 2025 Sky_Trav1er
 #pragma once
-#include <iostream>
-#include <string>
 
 #ifndef PLANE_H
 #define PLANE_H
+
+#include <iostream>
+#include <string>
 
 class Plane {
     std::string _number;

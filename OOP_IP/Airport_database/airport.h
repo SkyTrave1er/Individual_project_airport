@@ -1,11 +1,11 @@
 //  Copyright 2025 Sky_Trav1er
-#include "../Flights/flights.h"
-#include <string>
 #pragma once
+
 #ifndef AIRPORT_H
 #define AIRPORT_H
 
-
+#include "../Flights/flights.h"
+#include <string>
 
 class Airport {
     TVector<Flights> _flights;

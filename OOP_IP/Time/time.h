@@ -1,11 +1,11 @@
 //  Copyright 2025 Sky_Trav1er
 #pragma once
-#include <iostream>
-#include <string>
 
 #ifndef TIME_H
 #define TIME_H
 
+#include <iostream>
+#include <string>
 
 class Time {
     int _hour;

@@ -1,10 +1,11 @@
 //  Copyright 2025 Sky_Trav1er
 #pragma once
-#include <iostream>
-#include <string>
 
 #ifndef FIO_H
 #define FIO_H
+
+#include <iostream>
+#include <string>
 
 class FIO {
     std::string _first_name;
