@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <string>
 #include <Windows.h>
-#include "../TVector/vector.h"
+#include "../TVector/vector.h"  // NOLINT(build/include_subdir)
 
 
 
@@ -40,7 +40,7 @@ bool check(const T& expected, const T& actual) {
     if (expected == actual) {
         return true;
     } else {
-        std::cerr << "Expected result is " << expected 
+        std::cerr << "Expected result is " << expected
             << ", but actual is " << actual << "." << std::endl;
         return false;
     }
@@ -56,23 +56,23 @@ void print_final_info() {
     set_color(2, 0);
     std::cout << "[==========] ";
     set_color(7, 0);
-    std::cout << count_success + count_failed << " test" << 
-        (count_success + count_failed > 1 ? "s" : "") 
+    std::cout << count_success + count_failed << " test" <<
+        (count_success + count_failed > 1 ? "s" : "")
         << " ran." << std::endl;
     set_color(2, 0);
     std::cout << "[  PASSED  ] ";
     set_color(7, 0);
-    std::cout << count_success << " test" 
+    std::cout << count_success << " test"
         << (count_success > 1 ? "s" : "") << std::endl;
     if (count_failed > 0) {
         set_color(4, 0);
         std::cout << "[  FAILED  ] ";
         set_color(7, 0);
-        std::cout << count_failed << " test" << (count_failed > 1 ? "s." : ".") << std::endl;
+        std::cout << count_failed << " test" <<
+            (count_failed > 1 ? "s." : ".") << std::endl;
     }
 }
-};
-// namespace TestSystem
+};  // namespace TestSystem
 
 bool test_1_default_constructor_int() {
     bool expected_result = true;
@@ -152,8 +152,7 @@ bool test_10_array_constructor() {
     bool expected_result = true;
     bool actual_result = true;
     TVector<int> vec({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, 10);
-    for (int i = 0; i < vec.size(); i++)
-    {
+    for (int i = 0; i < vec.size(); i++) {
         if (vec[i] != i + 1) actual_result = false;
     }
     if (vec.size() != 10 || vec.capacity() != 15) actual_result = false;
@@ -174,8 +173,7 @@ bool test_12_array_constructor_v2() {
     int mass[10] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
     size_t n = 10;
     TVector<int> vec(mass, n);
-    for (int i = 0; i < vec.size(); i++)
-    {
+    for (int i = 0; i < vec.size(); i++) {
         if (vec[i] != i + 1) actual_result = false;
     }
     if (vec.size() != 10 || vec.capacity() != 15) actual_result = false;
@@ -189,7 +187,7 @@ bool test_13_copy_constructor_int() {
     TVector<int> original(10);
     TVector<int> copy(original);
 
-    if (original.size() != copy.size() || 
+    if (original.size() != copy.size() ||
         original.capacity() != copy.capacity()) actual_result = false;
     return TestSystem::check(expected_result, actual_result);
 }
@@ -431,7 +429,7 @@ bool test_35_push_back_string() {
     vec.push_back("Hello");
     vec.push_back("there");
     vec.push_back("guys");
-    if (vec[0] != "Hello" || vec[1] != "there" 
+    if (vec[0] != "Hello" || vec[1] != "there"
         || vec[2] != "guys") actual_result = false;
     return TestSystem::check(expected_result, actual_result);
 }
@@ -476,7 +474,7 @@ bool test_39_push_back_string() {
     vec.push_front("yo");
     vec.push_front("hi");
     vec.push_front("wassup");
-    if (vec[0] != "wassup" || vec[1] != "hi" 
+    if (vec[0] != "wassup" || vec[1] != "hi"
         || vec[2] != "yo") actual_result = false;
     return TestSystem::check(expected_result, actual_result);
 }
@@ -737,7 +735,7 @@ bool test_65_pop_back_string() {
 bool test_67_data_for_vector_with_elem_1() {
     bool expected_result = true;
     bool actual_result = true;
-    TVector<int> vec({ 1 ,2, 3, 4, 5, 6, 7, 8, 9, 10 }, 10);
+    TVector<int> vec({ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, 10);
     const int* a = vec.data();
     if (a == nullptr) actual_result = false;
     return TestSystem::check(expected_result, actual_result);
@@ -1004,8 +1002,7 @@ bool test_93_end() {
 
     auto end_it = vec.end();
     int count = 0;
-    for (auto it = vec.begin(); it != end_it; ++it)
-    {
+    for (auto it = vec.begin(); it != end_it; ++it) {
         ++count;
     }
 

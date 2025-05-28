@@ -1,7 +1,7 @@
 //  Copyright 2025 Sky_Trav1er
-#pragma once
 #include "../Person/person.h"
 #include <string>
+#pragma once
 
 #ifndef EMPLOYEE_H
 #define EMPLOYEE_H
