@@ -4,8 +4,8 @@
 #ifndef EMPLOYEE_H
 #define EMPLOYEE_H
 
-#include "../Person/person.h"
 #include <string>
+#include "../Person/person.h"
 
 enum class Position { PILOT, STEWARD, TECHNICAN};
 

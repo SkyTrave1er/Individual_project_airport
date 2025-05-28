@@ -5,13 +5,13 @@
 #ifndef FLIGHTS_H
 #define FLIGHTS_H
 
+#include <string>
 #include "../Time/time.h"
 #include "../Destination/destination.h"
 #include "../TVector/vector.h"
 #include "../Plane/plane.h"
 #include "../Passenger/passenger.h"
 #include "../Employee/employee.h"
-#include <string>
 
 enum class Flight_status { SCHEDULED, DELAYED, CANCELLED};
 
